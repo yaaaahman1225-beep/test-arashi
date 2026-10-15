@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>打合せの持ち物チェックリスト</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #202b3c;
+      --muted: #758197;
+      --line: #e7ebf2;
+      --blue: #4268d5;
+      --blue-dark: #3153b5;
+      --surface: #ffffff;
+      --background: #f5f7fb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 56px 20px;
+      background: var(--background);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .app { width: min(100%, 560px); margin: 0 auto; }
+    .eyebrow {
+      margin: 0 0 9px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+    }
+    h1 { margin: 0; font-size: clamp(25px, 6vw, 32px); letter-spacing: -.04em; }
+    .subtitle { margin: 9px 0 26px; color: var(--muted); font-size: 14px; }
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+      box-shadow: 0 12px 34px rgb(33 48 78 / 6%);
+    }
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 21px;
+      border-bottom: 1px solid var(--line);
+    }
+    .count { color: var(--muted); font-size: 13px; }
+    .count strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+    button, input { font: inherit; }
+    .reset {
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: #59667b;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .reset:hover { border-color: #cbd3e1; background: #f8f9fc; }
+    .list { margin: 0; padding: 0 21px; list-style: none; }
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 57px;
+      border-bottom: 1px solid var(--line);
+    }
+    .item:last-child { border-bottom: 0; }
+    .check {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var(--blue);
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+    .label { flex: 1; min-width: 0; color: #354156; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+    .item.done .label { color: #9aa3b2; text-decoration: line-through; }
+    .delete {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: #9aa3b2;
+      font-size: 19px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .delete:hover { background: #fff0f0; color: #c54c4c; }
+    .add-form { display: flex; gap: 9px; padding: 17px 21px 21px; border-top: 1px solid var(--line); }
+    .add-form input {
+      width: 100%;
+      min-width: 0;
+      padding: 11px 12px;
+      border: 1px solid #dfe4ed;
+      border-radius: 9px;
+      outline: none;
+      color: var(--ink);
+      font-size: 14px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .add-form input::placeholder { color: #a0a9b8; }
+    .add-form input:focus { border-color: #8da4eb; box-shadow: 0 0 0 3px rgb(66 104 213 / 12%); }
+    .add {
+      flex: 0 0 auto;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 9px;
+      background: var(--blue);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .add:hover { background: var(--blue-dark); }
+    .add:active { transform: translateY(1px); }
+    button:focus-visible, .check:focus-visible { outline: 3px solid rgb(66 104 213 / 35%); outline-offset: 2px; }
+    .empty { padding: 25px 10px; color: var(--muted); text-align: center; font-size: 13px; }
+    .footnote { margin: 15px 2px 0; color: #99a2b1; font-size: 12px; text-align: center; }
+    @media (max-width: 480px) { body { padding: 36px 16px; } .card-head, .list { padding-left: 16px; padding-right: 16px; } .add-form { padding-left: 16px; padding-right: 16px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <p class="eyebrow">MEETING PREP</p>
+    <h1>打合せの持ち物</h1>
+    <p class="subtitle">必要なものを確認して、準備を整えましょう。</p>
+
+    <section class="card" aria-label="持ち物チェックリスト">
+      <div class="card-head">
+        <div class="count" aria-live="polite"><strong id="remaining">0</strong> / <span id="total">0</span> 件 完了</div>
+        <button class="reset" id="reset" type="button">すべてリセット</button>
+      </div>
+      <ul class="list" id="list"></ul>
+      <form class="add-form" id="add-form">
+        <input id="new-item" type="text" maxlength="120" placeholder="持ち物を追加..." aria-label="追加する持ち物" autocomplete="off">
+        <button class="add" type="submit">追加</button>
+      </form>
+    </section>
+    <p class="footnote">チェックした項目は取り消し線で表示されます。</p>
+  </main>
+
+  <script>
+    (() => {
+      const initialItems = [
+        { text: "ノート・メモ帳", checked: false },
+        { text: "筆記用具", checked: false },
+        { text: "打合せ資料", checked: false },
+        { text: "ノートパソコン", checked: false },
+        { text: "名刺", checked: false }
+      ];
+      let items = initialItems.map(item => ({ ...item }));
+      const list = document.getElementById("list");
+      const form = document.getElementById("add-form");
+      const input = document.getElementById("new-item");
+      const remaining = document.getElementById("remaining");
+      const total = document.getElementById("total");
+
+      function render() {
+        list.replaceChildren();
+        if (items.length === 0) {
+          const empty = document.createElement("li");
+          empty.className = "empty";
+          empty.textContent = "持ち物はまだありません。上から追加できます。";
+          list.append(empty);
+        }
+        items.forEach((item, index) => {
+          const row = document.createElement("li");
+          row.className = `item${item.checked ? " done" : ""}`;
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.className = "check";
+          checkbox.checked = item.checked;
+          checkbox.setAttribute("aria-label", `${item.text}を完了にする`);
+          checkbox.addEventListener("change", () => {
+            items[index].checked = checkbox.checked;
+            render();
+          });
+          const label = document.createElement("span");
+          label.className = "label";
+          label.textContent = item.text;
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "delete";
+          remove.textContent = "×";
+          remove.setAttribute("aria-label", `${item.text}を削除`);
+          remove.addEventListener("click", () => {
+            items.splice(index, 1);
+            render();
+          });
+          row.append(checkbox, label, remove);
+          list.append(row);
+        });
+        total.textContent = String(items.length);
+        remaining.textContent = String(items.filter(item => item.checked).length);
+      }
+
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        const text = input.value.trim();
+        if (!text) {
+          input.focus();
+          return;
+        }
+        items.push({ text, checked: false });
+        input.value = "";
+        render();
+        input.focus();
+      });
+
+      document.getElementById("reset").addEventListener("click", () => {
+        items.forEach(item => { item.checked = false; });
+        render();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
