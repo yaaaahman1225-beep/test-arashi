@@ -3,25 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f7fb">
-  <title>打合せの持ち物チェックリスト</title>
+  <meta name="theme-color" content="#fff1e8">
+  <title>打合せ持ち物リスト</title>
   <style>
     :root {
       color-scheme: light;
-      --ink: #202b3c;
-      --muted: #758197;
-      --line: #e7ebf2;
-      --blue: #4268d5;
-      --blue-dark: #3153b5;
+      --ink: #302a48;
+      --muted: #756f8b;
+      --line: #eee6f4;
+      --blue: #7254d8;
+      --blue-dark: #5b3bc4;
       --surface: #ffffff;
-      --background: #f5f7fb;
+      --background: #fff8f1;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
       padding: 56px 20px;
-      background: var(--background);
+      background:
+        radial-gradient(ellipse at 12% 8%, rgb(255 194 133 / 36%), transparent 30%),
+        radial-gradient(ellipse at 90% 18%, rgb(201 177 255 / 38%), transparent 28%),
+        linear-gradient(145deg, #fff8f1 0%, #f4f5ff 52%, #effaff 100%);
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -29,7 +32,7 @@
     .app { width: min(100%, 560px); margin: 0 auto; }
     .eyebrow {
       margin: 0 0 9px;
-      color: var(--blue);
+      color: #e66d54;
       font-size: 12px;
       font-weight: 700;
       letter-spacing: .12em;
@@ -38,10 +41,10 @@
     .subtitle { margin: 9px 0 26px; color: var(--muted); font-size: 14px; }
     .card {
       overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 16px;
+      border: 1px solid #eadff2;
+      border-radius: 20px;
       background: var(--surface);
-      box-shadow: 0 12px 34px rgb(33 48 78 / 6%);
+      box-shadow: 0 16px 42px rgb(89 63 130 / 12%);
     }
     .card-head {
       display: flex;
@@ -50,21 +53,22 @@
       gap: 12px;
       padding: 18px 21px;
       border-bottom: 1px solid var(--line);
+      background: linear-gradient(100deg, #fff1e7, #fff0f7 52%, #f2efff);
     }
     .count { color: var(--muted); font-size: 13px; }
-    .count strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+    .count strong { color: #e66d54; font-variant-numeric: tabular-nums; }
     button, input { font: inherit; }
     .reset {
       padding: 7px 11px;
-      border: 1px solid var(--line);
+      border: 1px solid #e8dcf3;
       border-radius: 8px;
-      background: white;
-      color: #59667b;
+      background: #fff;
+      color: #695a82;
       font-size: 12px;
       cursor: pointer;
       transition: background .15s, border-color .15s;
     }
-    .reset:hover { border-color: #cbd3e1; background: #f8f9fc; }
+    .reset:hover { border-color: #c8b2ef; background: #f8f3ff; }
     .list { margin: 0; padding: 0 21px; list-style: none; }
     .item {
       display: flex;
@@ -78,12 +82,16 @@
       width: 18px;
       height: 18px;
       margin: 0;
-      accent-color: var(--blue);
+      accent-color: #7254d8;
       cursor: pointer;
       flex: 0 0 auto;
     }
-    .label { flex: 1; min-width: 0; color: #354156; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
-    .item.done .label { color: #9aa3b2; text-decoration: line-through; }
+    .label { flex: 1; min-width: 0; color: #39334f; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+    .item.done .label { color: #a29bad; text-decoration: line-through; }
+    .item:nth-child(4n + 1) .check { accent-color: #ff8a65; }
+    .item:nth-child(4n + 2) .check { accent-color: #35b9a4; }
+    .item:nth-child(4n + 3) .check { accent-color: #f2b544; }
+    .item:nth-child(4n) .check { accent-color: #7254d8; }
     .delete {
       display: grid;
       width: 30px;
@@ -118,14 +126,14 @@
       padding: 0 16px;
       border: 0;
       border-radius: 9px;
-      background: var(--blue);
+      background: linear-gradient(135deg, #ff8a65, #ec5b8b 52%, #805be2);
       color: white;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       transition: background .15s, transform .1s;
     }
-    .add:hover { background: var(--blue-dark); }
+    .add:hover { background: linear-gradient(135deg, #ed7551, #d94779 52%, #6944cd); }
     .add:active { transform: translateY(1px); }
     button:focus-visible, .check:focus-visible { outline: 3px solid rgb(66 104 213 / 35%); outline-offset: 2px; }
     .empty { padding: 25px 10px; color: var(--muted); text-align: center; font-size: 13px; }
@@ -137,7 +145,7 @@
 <body>
   <main class="app">
     <p class="eyebrow">MEETING PREP</p>
-    <h1>打合せの持ち物</h1>
+    <h1>打合せ持ち物リスト</h1>
     <p class="subtitle">必要なものを確認して、準備を整えましょう。</p>
 
     <section class="card" aria-label="持ち物チェックリスト">
